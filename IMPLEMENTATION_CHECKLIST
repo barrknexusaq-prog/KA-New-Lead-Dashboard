@@ -1,0 +1,483 @@
+# Implementation Checklist
+## Step-by-Step Build Guide
+
+Use this checklist to track your progress building the dashboard.
+
+---
+
+## Phase 1: Preparation ⏭️
+
+- [ ] **Step 1.1** — Create a new Google Sheet file
+  - Go to https://sheets.google.com
+  - Click "Create" → "Spreadsheet"
+  - Name it: "Keystone Acquisitions - New Leads Dashboard"
+  
+- [ ] **Step 1.2** — Rename the default sheet
+  - Right-click "Sheet1"
+  - Rename to: "Leads Database"
+
+- [ ] **Step 1.3** — Create the dashboard sheet
+  - Click "+" to add a new sheet
+  - Name it: "New Leads Dashboard"
+
+- [ ] **Step 1.4** — Review your lead data source
+  - Identify where your current leads are stored
+  - Plan how to migrate/copy data to "Leads Database" sheet
+
+---
+
+## Phase 2: Leads Database Setup 📊
+
+### Headers
+
+- [ ] **Step 2.1** — go to "Leads Database" sheet
+- [ ] **Step 2.2** — enter column headers in row 1
+  - A1: Lead ID
+  - B1: Date Received
+  - C1: Date Entered
+  - D1: Property Name
+  - E1: Address
+  - F1: City
+  - G1: State
+  - H1: Asset Type
+  - I1: Asking Price
+  - J1: Number of Units/Pads/Sites
+  - K1: Acreage
+  - L1: NOI
+  - M1: Occupancy / Vacancy
+  - N1: Broker Name
+  - O1: Broker Phone
+  - P1: Sender Name
+  - Q1: Sender Email
+  - R1: Attachments Received
+  - S1: Missing Docs Flag
+  - T1: Missing Docs List
+  - U1: Seller Financing Mention
+  - V1: Summary of Opportunity
+  - W1: Intake Status
+  - X1: Follow-Up Status
+  - Y1: Human Review Flag
+  - Z1: Last Follow-Up Date
+  - AA1: Assigned To
+  - AB1: Notes
+
+### Data Validation (Dropdowns)
+
+- [ ] **Step 2.3** — Set up dropdown for Column H (Asset Type)
+  - Select H2:H1000
+  - Data → Validation
+  - Choose: List of items
+  - Enter: RV Park, Campground, Resort
+  - Save
+
+- [ ] **Step 2.4** — Set up dropdown for Column W (Intake Status)
+  - Select W2:W1000
+  - Data → Validation
+  - Choose: List of items
+  - Enter: New, In Progress, Waiting on Docs, Ready for Review, Human Review Needed, Completed
+  - Save
+
+- [ ] **Step 2.5** — Set up dropdown for Column X (Follow-Up Status)
+  - Select X2:X1000
+  - Data → Validation
+  - Choose: List of items
+  - Enter: No Follow-up Sent, Follow-up Sent, Follow-up in Progress, Completed
+  - Save
+
+### Test Data (Optional but recommended)
+
+- [ ] **Step 2.6** — Add at least 5-10 test leads
+  - Use realistic sample data
+  - Mix of asset types (RV Parks, Campgrounds, Resorts)
+  - Vary dates, statuses, flags
+  - Include some with missing docs, human review flags, etc.
+
+---
+
+## Phase 3: Dashboard Sheet - Header & KPIs 🎨
+
+### Switch to "New Leads Dashboard" sheet
+
+- [ ] **Step 3.1** — Click the "New Leads Dashboard" tab at bottom
+
+### SECTION A — Header (Rows 1-3)
+
+- [ ] **Step 3.2** — Row 1: Main Title
+  - Merge cells A1:G1
+  - Content: "New Leads Dashboard"
+  - Format: Bold, 18pt, white text, navy blue background (#1a3a5f)
+  - Row height: 36pt
+
+- [ ] **Step 3.3** — Row 2: Subtitle
+  - Merge cells A2:G2
+  - Content: "Keystone Acquisitions Intake Monitoring"
+  - Format: 11pt, gray text (#555555), italic, navy blue background
+  - Row height: 24pt
+
+- [ ] **Step 3.4** — Row 3: Last Updated
+  - Cell A3: "Last Updated:"
+  - Cell B3: =TEXT(NOW(),"MMM DD, YYYY at h:mm AM/PM")
+  - Format: 9pt
+  - Background: Light gray (#f9f9f9)
+  - Add bottom border (light gray)
+
+### SECTION B — KPI Cards (Rows 5-9)
+
+- [ ] **Step 3.5** — Row 5: KPI Labels
+  - A5: Total New Leads
+  - B5: Leads Today
+  - C5: Leads This Week
+  - D5: Leads This Month
+  - E5: Missing Docs
+  - F5: Awaiting Follow-Up
+  - G5: Human Review
+  - Format: Bold, 10pt, centered, light gray background (#d3d3d3)
+  - Row height: 20pt
+
+- [ ] **Step 3.6** — Row 6: KPI Formulas (First Row)
+  - A6: =COUNTA('Leads Database'!A2:A)
+  - B6: =COUNTIFS('Leads Database'!B:B,TODAY())
+  - C6: =COUNTIFS('Leads Database'!B:B,">="&TODAY()-6,'Leads Database'!B:B,"<="&TODAY())
+  - D6: =COUNTIFS('Leads Database'!B:B,">="&DATE(YEAR(TODAY()),MONTH(TODAY()),1),'Leads Database'!B:B,"<="&TODAY())
+  - E6: =COUNTIF('Leads Database'!S:S,TRUE)
+  - F6: =COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!X:X,"<>Completed")
+  - G6: =COUNTIF('Leads Database'!Y:Y,TRUE)
+  - Format: Bold, 16pt, centered, light blue background (#e8f1f8), 2pt navy border
+  - Row height: 40pt
+  - Number format: 0 (integers)
+
+- [ ] **Step 3.7** — Row 7: Secondary KPIs
+  - A7: =COUNTIF('Leads Database'!H:H,"RV Park")
+  - B7: =COUNTIF('Leads Database'!H:H,"Campground")
+  - C7: =COUNTIF('Leads Database'!H:H,"Resort")
+  - D7: =COUNTIF('Leads Database'!U:U,TRUE)
+  - E7: =IF(A6=0,0,ROUND(E6/A6*100,1))&"%"
+  - F7: =IF(A6=0,0,ROUND(G6/A6*100,1))&"%"
+  - G7: =C6
+  - Format: Bold, 11pt, centered, light gray background (#f0f0f0), 1pt gray border
+  - Row height: 28pt
+
+---
+
+## Phase 4: Dashboard Sheet - Status & Monitoring 📋
+
+### SECTION C — Status Breakdown (Rows 10-17)
+
+- [ ] **Step 4.1** — Row 10: Section header
+  - Merge A10:C10
+  - Content: "INTAKE STATUS SUMMARY"
+  - Format: Bold, 11pt, white text, medium gray background (#d3d3d3)
+  - Row height: 24pt
+
+- [ ] **Step 4.2** — Row 11: Table headers
+  - A11: Status | B11: Count | C11: % of Total
+  - Format: Bold, 10pt, light gray background (#f0f0f0)
+  - Row height: 20pt
+
+- [ ] **Step 4.3** — Rows 12-17: Status data
+  - A12 through A17: New, In Progress, Waiting on Docs, Ready for Review, Human Review Needed, Completed
+  - B12: =COUNTIF('Leads Database'!W:W,"New")
+  - B13: =COUNTIF('Leads Database'!W:W,"In Progress")
+  - B14: =COUNTIF('Leads Database'!W:W,"Waiting on Docs")
+  - B15: =COUNTIF('Leads Database'!W:W,"Ready for Review")
+  - B16: =COUNTIF('Leads Database'!W:W,"Human Review Needed")
+  - B17: =COUNTIF('Leads Database'!W:W,"Completed")
+  - C12-C17: =IF($B$6=0,0,ROUND(B12/$B$6*100,1))&"%" (adjust row for each)
+  - Format: 10pt, center-aligned, alternating white / #f9f9f9 background
+  - Row height: 20pt each
+
+### SECTION D — Missing Docs Monitoring (Rows 18-40)
+
+- [ ] **Step 4.4** — Row 18: Section header
+  - Merge A18:I18
+  - Content: "MISSING DOCS & FOLLOW-UP MONITORING"
+  - Format: Bold, 11pt, white text, medium gray background
+  - Row height: 24pt
+
+- [ ] **Step 4.5** — Rows 19-23: Summary metrics
+  - A19: Total Missing Docs: | B19: =E6
+  - A20: Waiting >3 Days: | B20: =COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!B:B,"<"&TODAY()-3,'Leads Database'!X:X,"No Follow-up Sent")
+  - A21: No Follow-up Sent: | B21: =COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!X:X,"No Follow-up Sent")
+  - A22: Follow-up Sent: | B22: =COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!X:X,"<>No Follow-up Sent",'Leads Database'!X:X,"<>Completed")
+  - A23: Needs Immediate Attention: | B23: =COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!B:B,"<"&TODAY()-3,'Leads Database'!X:X,"No Follow-up Sent")+COUNTIF('Leads Database'!Y:Y,TRUE)
+  - Format A: Bold, 9pt, gray background
+  - Format B: Bold, 12pt, center-aligned (B23 = red background)
+  - Row height: 18pt each
+
+- [ ] **Step 4.6** — Row 25: Exception table headers
+  - A25: Lead ID
+  - B25: Property Name
+  - C25: City
+  - D25: Broker Name
+  - E25: Date Received
+  - F25: Days Since
+  - G25: Missing Docs List
+  - H25: Follow-Up Status
+  - I25: Human Review
+  - Format: Bold, 9pt, light gray background (#f0f0f0), centered
+  - Row height: 20pt
+
+- [ ] **Step 4.7** — Rows 26-40: Exception table (FILTER formulas)
+  - A26: =IFERROR(FILTER('Leads Database'!A:A,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - B26: =IFERROR(FILTER('Leads Database'!D:D,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - C26: =IFERROR(FILTER('Leads Database'!F:F,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - D26: =IFERROR(FILTER('Leads Database'!N:N,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - E26: =IFERROR(FILTER('Leads Database'!B:B,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - F26: =IF(A26="","",TODAY()-E26)
+  - G26: =IFERROR(FILTER('Leads Database'!T:T,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - H26: =IFERROR(FILTER('Leads Database'!X:X,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - I26: =IFERROR(FILTER('Leads Database'!Y:Y,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+  - Format: 9pt, alternating white / #f9f9f9 background, 1pt borders
+  - Row height: 18pt each
+
+- [ ] **Step 4.8** — Apply conditional formatting to Exception Table (rows 26-40)
+  - Select G26:G40 (Missing Docs List)
+    - Format if text is not empty: Amber background (#ffd966)
+  - Select F26:F40 (Days Since)
+    - Format if >= 5: Orange background (#f9c448)
+    - Format if >= 10: Red background (#f4cccc)
+  - Select H26:H40 (Follow-Up Status)
+    - Format if = "No Follow-up Sent": Orange background (#f9c448)
+  - Select I26:I40 (Human Review)
+    - Format if = TRUE: Red background (#f4cccc)
+
+---
+
+## Phase 5: Dashboard Sheet - Review & Recent Leads 📱
+
+### SECTION E — Human Review Queue (Rows 42-62)
+
+- [ ] **Step 5.1** — Row 42: Section header
+  - Merge A42:I42
+  - Content: "HUMAN REVIEW QUEUE (Priority Items)"
+  - Format: Bold, 11pt, white text, dark red background (#c84838)
+  - Row height: 24pt
+
+- [ ] **Step 5.2** — Row 43: Table headers
+  - A43: Lead ID | B43: Date Received | C43: Property Name
+  - D43: Asset Type | E43: Asking Price | F43: Broker Name
+  - G43: Intake Status | H43: Flag Reason | I43: Notes
+  - Format: Bold, 9pt, white text, medium gray background (#d3d3d3)
+  - Row height: 20pt
+
+- [ ] **Step 5.3** — Rows 44-62: Human Review data (FILTER formulas)
+  - A44: =IFERROR(FILTER('Leads Database'!A:A,('Leads Database'!Y:Y=TRUE)),"")
+  - B44: =IFERROR(FILTER('Leads Database'!B:B,('Leads Database'!Y:Y=TRUE)),"")
+  - C44: =IFERROR(FILTER('Leads Database'!D:D,('Leads Database'!Y:Y=TRUE)),"")
+  - D44: =IFERROR(FILTER('Leads Database'!H:H,('Leads Database'!Y:Y=TRUE)),"")
+  - E44: =IFERROR(FILTER('Leads Database'!I:I,('Leads Database'!Y:Y=TRUE)),"")
+  - F44: =IFERROR(FILTER('Leads Database'!N:N,('Leads Database'!Y:Y=TRUE)),"")
+  - G44: =IFERROR(FILTER('Leads Database'!W:W,('Leads Database'!Y:Y=TRUE)),"")
+  - H44: =IF(A44="","","Check Notes")
+  - I44: =IFERROR(FILTER('Leads Database'!AB:AB,('Leads Database'!Y:Y=TRUE)),"")
+  - Format: 9pt, light red background (#f4cccc), 1pt borders
+  - Row height: 18pt each
+  - Column E: Currency format ($#,##0)
+  - Column I: Wrap text enabled
+
+### SECTION F — Asset Type Breakdown (Rows 64-72)
+
+- [ ] **Step 5.4** — Row 64: Section header
+  - Merge A64:C64
+  - Content: "ASSET TYPE BREAKDOWN"
+  - Format: Bold, 11pt, white text, medium gray background (#d3d3d3)
+  - Row height: 24pt
+
+- [ ] **Step 5.5** — Row 65: Table headers
+  - A65: Asset Type | B65: Count | C65: % of Total
+  - Format: Bold, 10pt, light gray background (#f0f0f0)
+  - Row height: 20pt
+
+- [ ] **Step 5.6** — Rows 66-68: Asset type data
+  - A66: RV Park | B66: =COUNTIF('Leads Database'!H:H,"RV Park") | C66: =IF($B$6=0,0,ROUND(B66/$B$6*100,1))&"%"
+  - A67: Campground | B67: =COUNTIF('Leads Database'!H:H,"Campground") | C67: =IF($B$6=0,0,ROUND(B67/$B$6*100,1))&"%"
+  - A68: Resort | B68: =COUNTIF('Leads Database'!H:H,"Resort") | C68: =IF($B$6=0,0,ROUND(B68/$B$6*100,1))&"%"
+  - Format: 11pt, right-aligned, alternating white / #f9f9f9
+  - Row height: 24pt each
+
+### SECTION G — Recent Leads Snapshot (Rows 74-94)
+
+- [ ] **Step 5.7** — Row 74: Section header
+  - Merge A74:I74
+  - Content: "RECENT LEADS (Last 30 Days)"
+  - Format: Bold, 11pt, white text, medium gray background (#d3d3d3)
+  - Row height: 24pt
+
+- [ ] **Step 5.8** — Row 75: Table headers
+  - A75: Date Received | B75: Property Name | C75: City
+  - D75: State | E75: Asset Type | F75: Asking Price
+  - G75: Intake Status | H75: Missing Docs | I75: Human Review
+  - Format: Bold, 9pt, light gray background (#f0f0f0)
+  - Row height: 20pt
+
+- [ ] **Step 5.9** — Rows 76-94: Recent leads data (FILTER formulas)
+  - A76: =IFERROR(FILTER('Leads Database'!B:B,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+  - B76: =IFERROR(FILTER('Leads Database'!D:D,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+  - C76: =IFERROR(FILTER('Leads Database'!F:F,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+  - D76: =IFERROR(FILTER('Leads Database'!G:G,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+  - E76: =IFERROR(FILTER('Leads Database'!H:H,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+  - F76: =IFERROR(FILTER('Leads Database'!I:I,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+  - G76: =IFERROR(FILTER('Leads Database'!W:W,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+  - H76: =IF(A76="","",IF(IFERROR(INDEX(FILTER('Leads Database'!S:S,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),ROW()-75),FALSE),TRUE,FALSE))
+  - I76: =IF(A76="","",IF(IFERROR(INDEX(FILTER('Leads Database'!Y:Y,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),ROW()-75),FALSE),TRUE,FALSE))
+  - Format: 9pt, alternating white / #f9f9f9, 1pt borders
+  - Row height: 18pt each
+  - Column A: Date format (MMM DD, YYYY)
+  - Column F: Currency format ($#,##0)
+
+- [ ] **Step 5.10** — Apply conditional formatting to Recent Leads (rows 76-94)
+  - Select H76:H94 (Missing Docs)
+    - Format if = TRUE: Amber background (#ffd966)
+  - Select I76:I94 (Human Review)
+    - Format if = TRUE: Red background (#f4cccc)
+
+---
+
+## Phase 6: Charts 📊
+
+- [ ] **Step 6.1** — Create Chart 1: Weekly Lead Volume
+  - Data: Build a helper table (or select KPI data by week)
+  - Chart type: Line chart
+  - Title: "Weekly Lead Volume Trend"
+  - Position: L5:Q20 (right side of KPIs)
+  - X-axis label: Week
+  - Y-axis label: Leads
+
+- [ ] **Step 6.2** — Create Chart 2: Asset Type Distribution
+  - Data: Asset Type Breakdown section (F66:C68)
+  - Chart type: Pie chart
+  - Title: "Leads by Asset Type"
+  - Position: L22:Q40
+  - Legend: Right
+
+- [ ] **Step 6.3** — Create Chart 3: Intake Status Breakdown
+  - Data: Status Summary section (B12:B17 with labels)
+  - Chart type: Bar chart (horizontal)
+  - Title: "Lead Status Distribution"
+  - Position: R5:W20
+
+- [ ] **Step 6.4** — Create Chart 4: Missing Docs vs Complete
+  - Data: Two values: Missing (E6) vs Complete (A6-E6)
+  - Chart type: Pie or Donut chart
+  - Title: "Documentation Status"
+  - Position: R22:W40
+  - Colors: Red for missing, green for complete
+
+---
+
+## Phase 7: Finalization & Sharing ✅
+
+### Freeze Panes
+
+- [ ] **Step 7.1** — Set up freeze panes
+  - Click on cell A2
+  - Go to View → Freeze → 1 row
+  - (Optional: Click B1 then View → Freeze → 1 row and 1 column)
+
+### Column Widths
+
+- [ ] **Step 7.2** — Adjust column widths for readability
+  - Lead ID: 80px
+  - Property Name: 180px
+  - Broker Name: 150px
+  - Missing Docs List: 200px
+  - Notes: 250px
+  - Adjust others as needed
+
+### Final Checks
+
+- [ ] **Step 7.3** — Verify all formulas
+  - Check each section for #ERROR or #VALUE! errors
+  - Confirm KPIs match manual counts
+  - Test filters with sample data
+
+- [ ] **Step 7.4** — Test dashboard
+  - Scroll through entire sheet
+  - Verify charts display correctly
+  - Check conditional formatting visibility
+  - Click on cells to view formulas
+
+- [ ] **Step 7.5** — Clean up test data (optional)
+  - If you added sample leads from Step 2.6, delete them
+  - OR keep 2-3 representative samples for visual reference
+
+- [ ] **Step 7.6** — Protect the sheet (optional)
+  - Protect formulas to prevent accidental edits
+  - Unprotect the "Leads Database" sheet for data entry
+  - Go to Tools → Protect sheets and ranges
+
+- [ ] **Step 7.7** — Finalize and share
+  - Click "Share" button
+  - Add team members' emails
+  - Grant "View" or "Edit" permission as appropriate
+  - Send link to acquisitions team
+
+### Documentation
+
+- [ ] **Step 7.8** — Share documentation
+  - Send this checklist to your team
+  - Provide FORMULA_REFERENCE.md for reference
+  - Create a quick start guide for daily operations
+
+---
+
+## Post-Launch
+
+- [ ] **Step 8.1** — Train acquisitions team
+  - Show where to enter new leads
+  - Explain dashboard sections and what they mean
+  - Review update frequency (real-time as data changes)
+
+- [ ] **Step 8.2** — Monitor first week
+  - Check dashboard daily
+  - Collect feedback from users
+  - Make quick adjustments as needed
+
+- [ ] **Step 8.3** — Weekly review
+  - Validate metrics are accurate
+  - Adjust date ranges if needed (e.g., change "This Month" if needed)
+  - Archive very old leads if data grows large
+
+---
+
+## Customization Notes
+
+**If you want to:**
+
+- **Change date range** (e.g., "Last 60 Days" instead of "Last 30 Days")
+  - Find the formula with `TODAY()-30`
+  - Change `30` to your desired number of days
+
+- **Add a new asset type** (e.g., "Marina")
+  - Add to dropdown in Leads Database (Column H)
+  - Add a new row in Asset Type Breakdown section
+  - Create count formula following the pattern
+
+- **Rename "Leads Database" sheet**
+  - Use Find & Replace (Ctrl+H)
+  - Find: `'Leads Database'!`
+  - Replace: `'Your New Name'!`
+  - Replace All
+
+- **Adjust KPI thresholds** (e.g., "Waiting >5 Days" instead of ">3 Days")
+  - Edit the formula in the relevant KPI
+  - Change the number in the date comparison
+
+---
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Formulas show #ERROR | Check sheet name is exactly "Leads Database" |
+| FILTER formulas don't work | Ensure you're using Google Sheets (not Excel) |
+| KPI values don't update | Click recalculate (Ctrl+Shift+F9) or wait a moment |
+| Charts don't show data | Verify data range is correct and includes headers |
+| Conditional formatting not showing | Check condition rules are set correctly and formatting is applied |
+| Last Updated time is old | Formulas recalculate when the sheet changes; force with F9 |
+
+---
+
+**You're ready to build!** Start with Phase 1 and work through each phase in order.
+
+Good luck! 🚀
