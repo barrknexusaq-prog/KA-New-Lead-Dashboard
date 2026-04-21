@@ -1,0 +1,458 @@
+# Formula Reference Guide
+## New Leads Dashboard - Keystone Acquisitions
+
+Quick reference for all formulas used in the dashboard.
+
+---
+
+## KPI Formulas (Section B)
+
+### Total New Leads
+```
+=COUNTA('Leads Database'!A2:A)
+```
+Counts all non-empty cells in Lead ID column (starting row 2)
+
+### Leads Received Today
+```
+=COUNTIFS('Leads Database'!B:B,TODAY())
+```
+Counts rows where Date Received equals today
+
+### Leads Received This Week
+```
+=COUNTIFS('Leads Database'!B:B,">="&TODAY()-6,'Leads Database'!B:B,"<="&TODAY())
+```
+Counts last 7 days including today
+
+### Leads Received This Month
+```
+=COUNTIFS('Leads Database'!B:B,">="&DATE(YEAR(TODAY()),MONTH(TODAY()),1),'Leads Database'!B:B,"<="&TODAY())
+```
+Counts from start of current calendar month to today
+
+### Leads Missing Docs
+```
+=COUNTIF('Leads Database'!S:S,TRUE)
+```
+Counts all rows where Missing Docs Flag = TRUE
+
+### Leads Awaiting Follow-Up
+```
+=COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!X:X,"<>Completed")
+```
+Missing docs AND follow-up status is NOT completed
+
+### Leads Flagged for Human Review
+```
+=COUNTIF('Leads Database'!Y:Y,TRUE)
+```
+Counts all rows where Human Review Flag = TRUE
+
+### RV Park Leads
+```
+=COUNTIF('Leads Database'!H:H,"RV Park")
+```
+Counts all rows where Asset Type = "RV Park"
+
+### Campground Leads
+```
+=COUNTIF('Leads Database'!H:H,"Campground")
+```
+
+### Resort Leads
+```
+=COUNTIF('Leads Database'!H:H,"Resort")
+```
+
+### Seller Financing Mentions
+```
+=COUNTIF('Leads Database'!U:U,TRUE)
+```
+
+### % Missing Docs
+```
+=IF(A6=0,0,ROUND(E6/A6*100,1))&"%"
+```
+Percentage with error handling for division by zero
+
+### % Human Review
+```
+=IF(A6=0,0,ROUND(G6/A6*100,1))&"%"
+```
+
+### Leads Added (Last 7 Days)
+```
+=C6
+```
+References the "This Week" metric
+
+---
+
+## Status Breakdown Formulas (Section C)
+
+General pattern for each status (replace "Status Name" accordingly):
+
+```
+=COUNTIF('Leads Database'!W:W,"Status Name")
+```
+
+Examples:
+- **New:** `=COUNTIF('Leads Database'!W:W,"New")`
+- **In Progress:** `=COUNTIF('Leads Database'!W:W,"In Progress")`
+- **Waiting on Docs:** `=COUNTIF('Leads Database'!W:W,"Waiting on Docs")`
+- **Ready for Review:** `=COUNTIF('Leads Database'!W:W,"Ready for Review")`
+- **Human Review Needed:** `=COUNTIF('Leads Database'!W:W,"Human Review Needed")`
+- **Completed:** `=COUNTIF('Leads Database'!W:W,"Completed")`
+
+### Percentage Calculation
+For column C (% of Total), where row 6 contains total count:
+
+```
+=IF($B$6=0,0,ROUND(B12/$B$6*100,1))&"%"
+```
+
+Adjust row number ('B12', 'B13', etc.) for each status row.
+
+---
+
+## Missing Docs Monitoring Formulas (Section D)
+
+### Total Missing Docs
+```
+=E6
+```
+References KPI from section B
+
+### Waiting > 3 Days (no follow-up)
+```
+=COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!B:B,"<"&TODAY()-3,'Leads Database'!X:X,"No Follow-up Sent")
+```
+Missing Docs = TRUE
+AND Date Received > 3 days ago
+AND Follow-Up Status = "No Follow-up Sent"
+
+### No Follow-up Sent
+```
+=COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!X:X,"No Follow-up Sent")
+```
+Missing Docs AND no follow-up sent yet
+
+### Follow-up Sent
+```
+=COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!X:X,"<>No Follow-up Sent",'Leads Database'!X:X,"<>Completed")
+```
+Missing Docs AND follow-up in progress (sent but not completed)
+
+### Needs Immediate Attention
+```
+=COUNTIFS('Leads Database'!S:S,TRUE,'Leads Database'!B:B,"<"&TODAY()-3,'Leads Database'!X:X,"No Follow-up Sent")+COUNTIF('Leads Database'!Y:Y,TRUE)
+```
+Sum of:
+1. Missing Docs older than 3 days with no follow-up
+2. All leads flagged for human review
+
+---
+
+## Exception Table (Section D) - FILTER Formulas
+
+These formulas pull only leads with missing docs that haven't been completed.
+
+### Lead ID Column
+```
+=IFERROR(FILTER('Leads Database'!A:A,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+### Property Name Column
+```
+=IFERROR(FILTER('Leads Database'!D:D,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+### City Column
+```
+=IFERROR(FILTER('Leads Database'!F:F,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+### Broker Name Column
+```
+=IFERROR(FILTER('Leads Database'!N:N,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+### Date Received Column
+```
+=IFERROR(FILTER('Leads Database'!B:B,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+### Days Since Received Column
+```
+=IF(A26="","",TODAY()-E26)
+```
+Where A26 is the Lead ID column (adjust row number as needed)
+
+### Missing Docs List Column
+```
+=IFERROR(FILTER('Leads Database'!T:T,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+### Follow-Up Status Column
+```
+=IFERROR(FILTER('Leads Database'!X:X,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+### Human Review Flag Column
+```
+=IFERROR(FILTER('Leads Database'!Y:Y,('Leads Database'!S:S=TRUE),('Leads Database'!X:X<>"Completed")),"")
+```
+
+---
+
+## Human Review Queue (Section E) - FILTER Formulas
+
+These pull all leads flagged for human review.
+
+### Lead ID Column
+```
+=IFERROR(FILTER('Leads Database'!A:A,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+### Date Received Column
+```
+=IFERROR(FILTER('Leads Database'!B:B,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+### Property Name Column
+```
+=IFERROR(FILTER('Leads Database'!D:D,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+### Asset Type Column
+```
+=IFERROR(FILTER('Leads Database'!H:H,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+### Asking Price Column
+```
+=IFERROR(FILTER('Leads Database'!I:I,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+### Broker Name Column
+```
+=IFERROR(FILTER('Leads Database'!N:N,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+### Intake Status Column
+```
+=IFERROR(FILTER('Leads Database'!W:W,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+### Flag Reason Column
+```
+=IF(A44="","","Check Notes")
+```
+Simple indicator; actual reason is in Notes column
+
+### Notes Column
+```
+=IFERROR(FILTER('Leads Database'!AB:AB,('Leads Database'!Y:Y=TRUE)),"")
+```
+
+---
+
+## Asset Type Breakdown (Section F)
+
+### RV Park Count
+```
+=COUNTIF('Leads Database'!H:H,"RV Park")
+```
+
+### RV Park Percentage
+```
+=IF($B$6=0,0,ROUND(B66/$B$6*100,1))&"%"
+```
+
+### Campground Count
+```
+=COUNTIF('Leads Database'!H:H,"Campground")
+```
+
+### Campground Percentage
+```
+=IF($B$6=0,0,ROUND(B67/$B$6*100,1))&"%"
+```
+
+### Resort Count
+```
+=COUNTIF('Leads Database'!H:H,"Resort")
+```
+
+### Resort Percentage
+```
+=IF($B$6=0,0,ROUND(B68/$B$6*100,1))&"%"
+```
+
+---
+
+## Recent Leads (Section G) - FILTER Formulas
+
+These show leads received in the last 30 days, sorted by most recent first.
+
+### Date Received Column
+```
+=IFERROR(FILTER('Leads Database'!B:B,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+```
+
+### Property Name Column
+```
+=IFERROR(FILTER('Leads Database'!D:D,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+```
+
+### City Column
+```
+=IFERROR(FILTER('Leads Database'!F:F,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+```
+
+### State Column
+```
+=IFERROR(FILTER('Leads Database'!G:G,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+```
+
+### Asset Type Column
+```
+=IFERROR(FILTER('Leads Database'!H:H,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+```
+
+### Asking Price Column
+```
+=IFERROR(FILTER('Leads Database'!I:I,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+```
+
+### Intake Status Column
+```
+=IFERROR(FILTER('Leads Database'!W:W,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),"")
+```
+
+### Missing Docs Column
+```
+=IF(A76="","",IF(IFERROR(INDEX(FILTER('Leads Database'!S:S,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),ROW()-75),FALSE),TRUE,FALSE))
+```
+Note: The `ROW()-75` part maps the row number to the array index (adjust if your table starts at a different row)
+
+### Human Review Column
+```
+=IF(A76="","",IF(IFERROR(INDEX(FILTER('Leads Database'!Y:Y,('Leads Database'!B:B>TODAY()-30),SORT('Leads Database'!B:B,FALSE)),ROW()-75),FALSE),TRUE,FALSE))
+```
+
+---
+
+## Helper Formulas
+
+### Last Updated Timestamp
+```
+=TEXT(NOW(),"MMM DD, YYYY at h:mm AM/PM")
+```
+Auto-updates whenever sheet recalculates
+
+### Error Handling Wrapper
+Most formulas use IFERROR to return "" (blank) instead of error:
+```
+=IFERROR(formula,"")
+```
+
+### Zero Division Safety
+KPI percentages use this pattern to avoid errors when totals are zero:
+```
+=IF(denominator=0,0,calculation)
+```
+
+---
+
+## Column Reference
+
+Quick lookup for column letters in Leads Database:
+
+| Column | Field |
+|--------|-------|
+| A | Lead ID |
+| B | Date Received |
+| C | Date Entered |
+| D | Property Name |
+| E | Address |
+| F | City |
+| G | State |
+| H | Asset Type |
+| I | Asking Price |
+| J | Number of Units/Pads/Sites |
+| K | Acreage |
+| L | NOI |
+| M | Occupancy / Vacancy |
+| N | Broker Name |
+| O | Broker Phone |
+| P | Sender Name |
+| Q | Sender Email |
+| R | Attachments Received |
+| S | Missing Docs Flag |
+| T | Missing Docs List |
+| U | Seller Financing Mention |
+| V | Summary of Opportunity |
+| W | Intake Status |
+| X | Follow-Up Status |
+| Y | Human Review Flag |
+| Z | Last Follow-Up Date |
+| AA | Assigned To |
+| AB | Notes |
+
+---
+
+## Quick Customization
+
+### Change date range for "This Month" to "Last 30 Days"
+Replace:
+```
+DATE(YEAR(TODAY()),MONTH(TODAY()),1)
+```
+With:
+```
+TODAY()-30
+```
+
+### Change "Waiting > 3 Days" to "Waiting > 5 Days"
+Replace:
+```
+TODAY()-3
+```
+With:
+```
+TODAY()-5
+```
+
+### Add a new asset type
+1. Add to dropdown in Leads Database (Column H)
+2. Copy one of the asset type count formulas and change the criteria string
+3. Add a new row in Section F with appropriate formulas
+
+### Rename the data source sheet
+Use Find & Replace (Ctrl+H):
+- Find: `'Leads Database'!`
+- Replace with: `'Your New Sheet Name'!`
+- Click "Replace All"
+
+---
+
+## Testing Your Formulas
+
+After setting up:
+
+1. **Add test data** to Leads Database (at least 5 rows)
+2. **Verify KPIs** match manual count
+3. **Check exception tables** show correct rows
+4. **Test date ranges** by changing today's date if needed
+5. **Verify filters** work with TRUE/FALSE values
+
+If a formula returns an error:
+- Check column letter is correct
+- Verify the field name matches exactly in headers
+- Ensure data types match (dates, numbers, text, boolean)
+
+---
+
+**Need more help?** See SHEET_SETUP_GUIDE.md for full implementation instructions.
