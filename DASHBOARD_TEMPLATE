@@ -1,0 +1,509 @@
+# Dashboard Design Template
+## Visual Layout & Formatting Guide
+
+---
+
+## Overall Sheet Layout
+
+```
+Row 1-3:   HEADER SECTION
+           [Title, Subtitle, Last Updated]
+
+Row 5-9:   KPI CARDS SECTION
+           [7 major KPIs] [Asset Type KPIs] [% and Trend metrics]
+
+Row 10-17: STATUS BREAKDOWN SECTION
+           [Intake status summary table]
+
+Row 18-40: EXCEPTION MONITORING SECTION
+           [Missing Docs & Follow-Up table]
+
+Row 42-62: HUMAN REVIEW QUEUE SECTION
+           [Priority review items table]
+
+Row 64-72: ASSET TYPE BREAKDOWN SECTION
+           [Count and percentage by asset type]
+
+Row 74-94: RECENT LEADS SECTION
+           [Last 30 days snapshot]
+
+Columns L-S (on the side or below): CHARTS AREA
+```
+
+---
+
+## Color Palette
+
+Use a professional, muted color scheme:
+
+| Element | Color | Hex Code | Usage |
+|---------|-------|----------|-------|
+| Primary Header | Navy Blue | #1a3a5f | Title row background |
+| Section Headers | Medium Gray | #d3d3d3 | Section dividers |
+| KPI Background | Light Blue | #e8f1f8 | KPI card backgrounds |
+| Table Header | Light Gray | #f0f0f0 | Table header rows |
+| Alternating Rows | Very Light Gray | #f9f9f9 | Every other data row |
+| Warning/Missing Docs | Amber | #ffd966 | Conditional format flag |
+| Critical/Human Review | Light Red | #f4cccc | Conditional format flag |
+| Text (Primary) | Dark Gray | #2d2d2d | Standard text |
+| Text (Secondary) | Medium Gray | #555555 | Labels, subtitles |
+| Border | Light Gray | #cccccc | Table borders |
+
+---
+
+## SECTION A — Header (Rows 1-3)
+
+### Row 1: Main Title
+**Cells:** A1:G1 (merged)
+- **Content:** `New Leads Dashboard`
+- **Font:** Bold, 18pt, white text
+- **Background:** #1a3a5f (navy blue)
+- **Alignment:** Left-aligned with 8pt padding
+- **Height:** 36pt
+
+### Row 2: Subtitle
+**Cells:** A2:G2 (merged)
+- **Content:** `Keystone Acquisitions Intake Monitoring`
+- **Font:** 11pt, gray (#555555), italic
+- **Background:** #1a3a5f (same navy, lighter visual contrast)
+- **Alignment:** Left-aligned with 8pt padding
+- **Height:** 24pt
+
+### Row 3: Last Updated
+**Cell A3:** `Last Updated:`
+- Font: Bold, 9pt, gray
+
+**Cell B3:** `=TEXT(NOW(),"MMM DD, YYYY at h:mm AM/PM")`
+- Font: 9pt, dark gray
+
+**Cells:** A3:G3 background #f9f9f9 (light gray for visibility)
+**Border:** Bottom line only, light gray
+
+---
+
+## SECTION B — KPI Cards (Rows 5-9)
+
+### Row 5: KPI Labels
+
+Create 7 KPI label cells in row 5:
+
+| Cell | Label | Style |
+|------|-------|-------|
+| A5 | Total New Leads | Bold, 10pt, #d3d3d3 bg |
+| B5 | Leads Today | Bold, 10pt, #d3d3d3 bg |
+| C5 | Leads This Week | Bold, 10pt, #d3d3d3 bg |
+| D5 | Leads This Month | Bold, 10pt, #d3d3d3 bg |
+| E5 | Missing Docs | Bold, 10pt, #d3d3d3 bg |
+| F5 | Awaiting Follow-Up | Bold, 10pt, #d3d3d3 bg |
+| G5 | Human Review | Bold, 10pt, #d3d3d3 bg |
+
+**Row Height:** 20pt
+**Alignment:** Center
+
+### Row 6: KPI Values
+
+**All cells (A6:G6):**
+- **Font:** Bold, 16pt, navy (#1a3a5f)
+- **Background:** #e8f1f8 (light blue)
+- **Border:** 2pt solid #1a3a5f
+- **Alignment:** Center
+- **Height:** 40pt
+- **Number Format:** 0 (integers)
+
+### Row 7: Asset Type & Secondary KPIs
+
+| Cell | Label | Formula |
+|------|-------|---------|
+| A7 | RV Park Leads | Count formula |
+| B7 | Campground Leads | Count formula |
+| C7 | Resort Leads | Count formula |
+| D7 | Seller Financing | Count formula |
+| E7 | % Missing Docs | Percentage formula |
+| F7 | % Human Review | Percentage formula |
+| G7 | Last 7 Days Added | Reference to C6 |
+
+**All cells (A7:G7):**
+- **Font:** Bold, 11pt, center-aligned
+- **Background:** #f0f0f0 (light gray)
+- **Border:** 1pt solid #cccccc
+- **Height:** 28pt
+
+---
+
+## SECTION C — Status Breakdown (Rows 10-17)
+
+### Row 10: Section Header
+**Cells:** A10:C10 (merged)
+- **Content:** `INTAKE STATUS SUMMARY`
+- **Font:** Bold, 11pt, white text
+- **Background:** #d3d3d3 (medium gray, can use darker for contrast)
+- **Alignment:** Left
+- **Height:** 24pt
+
+### Row 11: Table Headers
+
+| Cell | Content | Style |
+|------|---------|-------|
+| A11 | Status | Bold, 10pt, #f0f0f0 bg |
+| B11 | Count | Bold, 10pt, #f0f0f0 bg |
+| C11 | % of Total | Bold, 10pt, #f0f0f0 bg |
+
+**Height:** 20pt
+
+### Rows 12-17: Status Data (6 statuses)
+
+**Column A (Status Names):**
+- New
+- In Progress
+- Waiting on Docs
+- Ready for Review
+- Human Review Needed
+- Completed
+
+**Columns B & C (Formulas):**
+- Font: 10pt
+- Alignment: Center (for count) / Right (for %)
+- Background: Alternating white / #f9f9f9
+- Border: 1pt light gray
+
+**Row Height:** 20pt each
+
+---
+
+## SECTION D — Missing Docs & Follow-Up Monitoring (Rows 18-40)
+
+### Row 18: Section Header
+**Cells:** A18:I18 (merged)
+- **Content:** `MISSING DOCS & FOLLOW-UP MONITORING`
+- **Font:** Bold, 11pt, white
+- **Background:** #d3d3d3
+- **Height:** 24pt
+
+### Rows 19-23: Summary Metrics
+
+Format as a small summary box:
+
+| Row | Cell A | Cell B | Style |
+|-----|--------|--------|-------|
+| 19 | Total Missing Docs: | [Formula] | Gray bg, bold label |
+| 20 | Waiting >3 Days: | [Formula] | Gray bg |
+| 21 | No Follow-up Sent: | [Formula] | Gray bg |
+| 22 | Follow-up Sent: | [Formula] | Gray bg |
+| 23 | Needs Immediate Attention: | [Formula] | **Red bg**, bold |
+
+**Cell B Styling:**
+- Bold, 12pt, dark text
+- Yellow highlight for row 23 (urgent)
+
+### Row 25: Exception Table Headers
+
+| Cell | Header |
+|------|--------|
+| A25 | Lead ID |
+| B25 | Property Name |
+| C25 | City |
+| D25 | Broker Name |
+| E25 | Date Received |
+| F25 | Days Since |
+| G25 | Missing Docs List |
+| H25 | Follow-Up Status |
+| I25 | Human Review |
+
+**Row Height:** 20pt
+**Font:** Bold, 9pt
+**Background:** #f0f0f0
+**Alignment:** Center for B, C, D, E; Left for others
+
+### Rows 26-40: Exception Table Data
+
+**Data Rows (26-40):**
+- **Font:** 9pt
+- **Background:** Alternating white / #f9f9f9
+- **Borders:** 1pt light gray
+- **Height:** 18pt
+
+**Conditional Formatting:**
+
+1. **Column G (Missing Docs List)**
+   - If cell contains text: Background amber (#ffd966)
+   - Font: Bold, dark
+
+2. **Column H (Follow-Up Status)**
+   - If = "No Follow-up Sent": Background orange (#f9c448)
+   - Font: Bold
+
+3. **Column F (Days Since)**
+   - If >= 5: Background orange (#f9c448)
+   - If >= 10: Background red (#f4cccc)
+
+4. **Column I (Human Review)**
+   - If = TRUE: Background red (#f4cccc)
+   - Font: Bold
+
+**Wrap Text:** Enabled for columns G (Missing Docs List)
+
+---
+
+## SECTION E — Human Review Queue (Rows 42-62)
+
+### Row 42: Section Header
+**Cells:** A42:I42 (merged)
+- **Content:** `HUMAN REVIEW QUEUE (Priority Items)`
+- **Font:** Bold, 11pt, white, italic
+- **Background:** Dark red (#c84838 or #8b0000, if you want high visibility)
+- **Height:** 24pt
+
+### Row 43: Table Headers
+
+| Cell | Header |
+|------|--------|
+| A43 | Lead ID |
+| B43 | Date Received |
+| C43 | Property Name |
+| D43 | Asset Type |
+| E43 | Asking Price |
+| F43 | Broker Name |
+| G43 | Intake Status |
+| H43 | Flag Reason |
+| I43 | Notes |
+
+**Row Height:** 20pt
+**Font:** Bold, 9pt, white
+**Background:** #d3d3d3
+**Alignment:** Center
+
+### Rows 44-62: Human Review Data
+
+**Data Rows:**
+- **Font:** 9pt
+- **Background:** Alternating white / light pink (#fce4ec)
+- **Borders:** 1pt light gray
+- **Height:** 18pt
+
+**Column E (Asking Price):**
+- **Format:** Currency ($#,##0)
+
+**Column I (Notes):**
+- **Wrap Text:** Enabled
+- **Alignment:** Left
+
+**Conditional Formatting:**
+- **All rows with data:** Whole row background = light red (#f4cccc)
+- **Font:** Dark, not bold (these are urgent, color is warning enough)
+
+---
+
+## SECTION F — Asset Type Breakdown (Rows 64-72)
+
+### Row 64: Section Header
+**Cells:** A64:C64 (merged)
+- **Content:** `ASSET TYPE BREAKDOWN`
+- **Font:** Bold, 11pt, white
+- **Background:** #d3d3d3
+- **Height:** 24pt
+
+### Row 65: Breakdown Headers
+
+| Cell | Header |
+|------|--------|
+| A65 | Asset Type |
+| B65 | Count |
+| C65 | % of Total |
+
+**Font:** Bold, 10pt
+**Background:** #f0f0f0
+**Height:** 20pt
+
+### Rows 66-68: Asset Types
+
+| Row | Asset Type | Count Formula | % Formula |
+|-----|-----------|---------------|-----------|
+| 66 | RV Park | =COUNTIF(...) | % formula |
+| 67 | Campground | =COUNTIF(...) | % formula |
+| 68 | Resort | =COUNTIF(...) | % formula |
+
+**All cells:**
+- **Font:** 11pt
+- **Background:** Alternating white / #f9f9f9
+- **Alignment:** Right (for numbers)
+- **Border:** 1pt light gray
+- **Height:** 24pt
+
+---
+
+## SECTION G — Recent Leads Snapshot (Rows 74-94)
+
+### Row 74: Section Header
+**Cells:** A74:I74 (merged)
+- **Content:** `RECENT LEADS (Last 30 Days)`
+- **Font:** Bold, 11pt, white
+- **Background:** #d3d3d3
+- **Height:** 24pt
+
+### Row 75: Table Headers
+
+| Cell | Header |
+|------|--------|
+| A75 | Date Received |
+| B75 | Property Name |
+| C75 | City |
+| D75 | State |
+| E75 | Asset Type |
+| F75 | Asking Price |
+| G75 | Intake Status |
+| H75 | Missing Docs |
+| I75 | Human Review |
+
+**Font:** Bold, 9pt
+**Background:** #f0f0f0
+**Height:** 20pt
+
+### Rows 76-94: Recent Leads Data
+
+**Data Rows:**
+- **Font:** 9pt
+- **Background:** Alternating white / #f9f9f9
+- **Borders:** 1pt light gray
+- **Height:** 18pt
+
+**Column A (Date Received):**
+- **Format:** MMM DD, YYYY
+
+**Column F (Asking Price):**
+- **Format:** Currency ($#,##0)
+
+**Columns H & I (Flags):**
+- **Content:** TRUE or FALSE (or use conditional text "❌" / "✓")
+- **Alignment:** Center
+
+**Conditional Formatting:**
+
+1. **Column H (Missing Docs)**
+   - If = TRUE: Background amber (#ffd966)
+   - Font: Bold
+
+2. **Column I (Human Review)**
+   - If = TRUE: Background red (#f4cccc)
+   - Font: Bold
+
+---
+
+## CHARTS AREA (Columns L-S, starting Row 5)
+
+### Chart 1: Weekly Lead Volume (Line Chart)
+**Position:** L5:Q20
+- **Title:** "Weekly Lead Volume Trend"
+- **Type:** Line chart
+- **X-axis:** Week (or date range)
+- **Y-axis:** Number of leads
+- **Color:** Blue line
+- **Animation:** None (professional look)
+
+### Chart 2: Asset Type Distribution (Pie Chart)
+**Position:** L22:Q40
+- **Title:** "Leads by Asset Type"
+- **Type:** Pie chart
+- **Data:** RV Park / Campground / Resort counts
+- **Colors:** Different shades (blue, green, orange)
+- **Legend:** Right side
+
+### Chart 3: Intake Status Breakdown (Bar Chart)
+**Position:** R5:W20
+- **Title:** "Lead Status Distribution"
+- **Type:** Horizontal bar chart
+- **Data:** 6 statuses with counts
+- **Colors:** Blue bars
+- **Sort:** By highest count
+
+### Chart 4: Missing Docs vs Complete (Pie Chart)
+**Position:** R22:W40
+- **Title:** "Documentation Status"
+- **Type:** Pie chart (or donut)
+- **Data:** "Missing Docs" vs "Complete"
+- **Colors:** Red for missing, green for complete
+
+---
+
+## Freeze Panes Setup
+
+**Freeze Settings:**
+- **Freeze:** Row 1 (header stays visible when scrolling down)
+- **Optional:** Also freeze Column A for row labels (View → Freeze → 1 column)
+
+**In Google Sheets:**
+1. Click on Row 2, Column A (cell A2)
+2. Go to View → Freeze → 1 row
+3. Optional: Click on Row 1, Column B → View → Freeze → 1 row and 1 column
+
+---
+
+## Print Layout (if printing)
+
+**Page Setup:**
+- **Orientation:** Landscape
+- **Paper:** Letter (8.5" × 11")
+- **Margins:** 0.5" all sides
+- **Scale:** 1 page wide × 2 pages tall (adjust to fit)
+- **Include:** Headers (print row 1-3)
+
+---
+
+## Responsive Design Tips
+
+For mobile or narrow views:
+- Dashboard is best viewed on desktop (wide screens)
+- Use View → Freeze panes to keep headers visible
+- Consider using filters on large tables
+- Charts may stack or resize — acceptable for monitoring
+
+---
+
+## Accessibility
+
+- Use sufficient color contrast (all text readable)
+- Don't rely solely on color for meaning (use text labels too)
+- Use clear, descriptive headers
+- Avoid flashing or animation
+
+---
+
+## Dark Mode Compatibility
+
+Google Sheets supports dark mode. Test your dashboard:
+- Light colors remain readable
+- Borders still visible
+- Tables stay clear
+
+**If needed, adjust:**
+- Header background to darker shade (test in dark mode)
+- KPI card background to slightly darker light blue
+
+---
+
+## Before Sharing
+
+**Checklist:**
+- ✅ All formulas working (no #ERROR or #VALUE! errors)
+- ✅ Charts updated with test data
+- ✅ Conditional formatting applied
+- ✅ Column widths adjusted for readability
+- ✅ Last Updated timestamp shows current date/time
+- ✅ All sections have descriptive headers
+- ✅ Borders and spacing consistent
+- ✅ No personal or sensitive test data visible
+- ✅ Share settings appropriate (view/edit as needed)
+
+---
+
+## Monthly Maintenance
+
+Every month:
+1. Verify all date formulas (THIS Month vs last month)
+2. Check that recent data flows into Recent Leads section
+3. Review conditional formatting highlighting (ensure still accurate)
+4. Archive old leads if data grows very large
+5. Verify charts are pulling latest data
+
+---
+
+**Ready to build?** See SHEET_SETUP_GUIDE.md for step-by-step implementation.
